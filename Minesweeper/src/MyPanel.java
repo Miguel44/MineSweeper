@@ -48,8 +48,7 @@ public class MyPanel extends JPanel {
 	               	 bombArray[x][y]= Color.BLACK;
 	               	System.out.println(bombArray[x][y]);
 	               	System.out.println(x);
-	               	System.out.println(y);
-	               	
+	               	System.out.println(y);	               	
 				 }
 			}
 		}
