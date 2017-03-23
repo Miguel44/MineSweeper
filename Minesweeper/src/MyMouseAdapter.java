@@ -4,8 +4,6 @@ import java.awt.Component;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-
 import javax.swing.JFrame;
 
 public class MyMouseAdapter extends MouseAdapter {
@@ -83,13 +81,12 @@ public class MyMouseAdapter extends MouseAdapter {
 							//On the left column and on the top row... do nothing
 						} else {
 							
-							if ( myPanel.bombArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == Color.BLACK){
-								myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.BLACK;
+							if ( !myPanel.checkForBombs(myPanel.mouseDownGridX , myPanel.mouseDownGridY)){
+								myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.GRAY;
 								myPanel.repaint();
 							}else{
-				
-					 myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.GRAY;
-					myPanel.repaint();	
+								myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.BLACK;
+								myPanel.repaint();
 							}
 						}
 					}

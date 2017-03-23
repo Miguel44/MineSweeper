@@ -11,13 +11,17 @@ public class MyPanel extends JPanel {
 	private static final int GRID_Y = 25;
 	private static final int INNER_CELL_SIZE = 29;
 	private static final int TOTAL_COLUMNS = 10;
-	private static final int TOTAL_ROWS = 11;   //Last row has only one cell
+	private static final int TOTAL_ROWS = 11; 
+	
+	private final int TOTAL_BOMBS = 20;
+	
+	Random randomBomb = new Random ();//Last row has only one cell
 	public int x = -1;
 	public int y = -1;
 	public int mouseDownGridX = 0;
 	public int mouseDownGridY = 0;
-	public  String[][] numMines = new String [TOTAL_COLUMNS][TOTAL_ROWS];
-	public  Color[][] bombArray = new Color [TOTAL_COLUMNS][TOTAL_ROWS];
+	public int numBombs = 0;
+	public  int [][] bombArray = new int [TOTAL_COLUMNS][TOTAL_ROWS];
 	public Color[][] colorArray = new Color[TOTAL_COLUMNS][TOTAL_ROWS];
 	public MyPanel() {   //This is the constructor... this code runs first to initialize
 		if (INNER_CELL_SIZE + (new Random()).nextInt(1) < 1) {	//Use of "random" to prevent unwanted Eclipse warning
@@ -38,19 +42,16 @@ public class MyPanel extends JPanel {
 		for (int x = 1; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
 			for (int y = 1; y < TOTAL_ROWS; y++) {
 				colorArray[x][y] = Color.WHITE;	
-				Random generator = new Random();
-				double p = generator.nextInt(5);
-				boolean[][] bombs = new boolean [TOTAL_COLUMNS][TOTAL_ROWS];
-				 bombs[x][y] = (generator.nextInt(15) < p); 
-				 System.out.println(colorArray[x][y]);
-				
-				 if (bombs[x][y]) {					
-	               	 bombArray[x][y]= Color.BLACK;
-	               	 numMines [x][y] = "1";
-	               	System.out.println(bombArray[x][y]); // For debugging purposes
-	               	System.out.println(x);
-	               	System.out.println(y);	               	
-				 }
+			}
+		}
+		while(numBombs<TOTAL_BOMBS){
+			
+			int C = randomBomb.nextInt(TOTAL_COLUMNS);
+			int R = randomBomb.nextInt(TOTAL_ROWS);
+			int Bomb = randomBomb.nextInt(2);
+			if( Bomb == 1 && bombArray[C][R] !=1){
+				numBombs ++;
+				bombArray [C][R]=Bomb;
 			}
 		}
 	}
@@ -87,11 +88,9 @@ public class MyPanel extends JPanel {
 		for (int x = 0; x < TOTAL_COLUMNS; x++) {
 			for (int y = 0; y < TOTAL_ROWS; y++) {
 				if ((x == 0) || (y != TOTAL_ROWS - 1)) {
-					Color d = bombArray[x][y];
-					g.setColor(d);
 					Color c = colorArray[x][y];
 					g.setColor(c);
-					g.drawString(numMines[x][y], x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)) + 1,  y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)) + 1);
+					
 					g.fillRect(x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)) + 1, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)) + 1, INNER_CELL_SIZE, INNER_CELL_SIZE);
 					
 				
@@ -148,5 +147,8 @@ public class MyPanel extends JPanel {
 			return -1;
 		}
 		return y;
+	}
+	public boolean checkForBombs ( int x, int y){
+		return bombArray[x][y]==1;
 	}
 }
