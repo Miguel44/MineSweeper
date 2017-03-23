@@ -16,7 +16,7 @@ public class MyPanel extends JPanel {
 	public int y = -1;
 	public int mouseDownGridX = 0;
 	public int mouseDownGridY = 0;
-	public  int[][] sol = new int[TOTAL_COLUMNS+2][TOTAL_ROWS+2];
+	public  String[][] numMines = new String [TOTAL_COLUMNS][TOTAL_ROWS];
 	public  Color[][] bombArray = new Color [TOTAL_COLUMNS][TOTAL_ROWS];
 	public Color[][] colorArray = new Color[TOTAL_COLUMNS][TOTAL_ROWS];
 	public MyPanel() {   //This is the constructor... this code runs first to initialize
@@ -46,7 +46,8 @@ public class MyPanel extends JPanel {
 				
 				 if (bombs[x][y]) {					
 	               	 bombArray[x][y]= Color.BLACK;
-	               	System.out.println(bombArray[x][y]);
+	               	 numMines [x][y] = "1";
+	               	System.out.println(bombArray[x][y]); // For debugging purposes
 	               	System.out.println(x);
 	               	System.out.println(y);	               	
 				 }
@@ -90,8 +91,10 @@ public class MyPanel extends JPanel {
 					g.setColor(d);
 					Color c = colorArray[x][y];
 					g.setColor(c);
+					g.drawString(numMines[x][y], x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)) + 1,  y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)) + 1);
 					g.fillRect(x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)) + 1, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)) + 1, INNER_CELL_SIZE, INNER_CELL_SIZE);
 					
+				
 				}
 			}
 		}
