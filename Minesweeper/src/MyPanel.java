@@ -46,12 +46,12 @@ public class MyPanel extends JPanel {
 		}
 		while(numBombs<TOTAL_BOMBS){
 			
-			int C = randomBomb.nextInt(TOTAL_COLUMNS);
-			int R = randomBomb.nextInt(TOTAL_ROWS);
+			int c = randomBomb.nextInt(TOTAL_COLUMNS);
+			int r = randomBomb.nextInt(TOTAL_ROWS);
 			int Bomb = randomBomb.nextInt(2);
-			if( Bomb == 1 && bombArray[C][R] !=1){
+			if( Bomb == 1 && bombArray[c][r] !=1){
 				numBombs ++;
-				bombArray [C][R]=Bomb;
+				bombArray [c][r]=Bomb;
 			}
 		}
 	}
