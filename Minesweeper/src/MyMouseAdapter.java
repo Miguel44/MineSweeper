@@ -97,10 +97,6 @@ public class MyMouseAdapter extends MouseAdapter {
 						//Do nothing
 					} else {
 						//Released the mouse button on the same cell where it was pressed
-						if ((gridX == 0) || (gridY == 0)) {
-							//On the left column and on the top row... do nothing
-						} else {
-							
 							if ( !myPanel.checkForBombs(myPanel.mouseDownGridX , myPanel.mouseDownGridY)){
 								myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.GRAY;
 								myPanel.repaint();
@@ -108,7 +104,7 @@ public class MyMouseAdapter extends MouseAdapter {
 								myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.BLACK;
 								myPanel.repaint();
 							}
-						}
+						
 					}
 				}
 			}
