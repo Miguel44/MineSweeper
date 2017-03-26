@@ -11,7 +11,7 @@ public class MyPanel extends JPanel {
 	private static final int GRID_Y = 25;
 	private static final int INNER_CELL_SIZE = 29;
 	private static final int TOTAL_COLUMNS = 10;
-	private static final int TOTAL_ROWS = 11; 
+	private static final int TOTAL_ROWS = 10; 
 	
 	private final int TOTAL_BOMBS = 20;
 	
@@ -81,16 +81,12 @@ public class MyPanel extends JPanel {
 			g.drawLine(x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)), y1 + GRID_Y, x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)), y1 + GRID_Y + ((INNER_CELL_SIZE + 1) * (TOTAL_ROWS - 1)));
 		}
 
-		//Draw an additional cell at the bottom left
-		g.drawRect(x1 + GRID_X, y1 + GRID_Y + ((INNER_CELL_SIZE + 1) * (TOTAL_ROWS - 1)), INNER_CELL_SIZE + 1, INNER_CELL_SIZE + 1);
-
 		//Paint cell colors
 		for (int x = 0; x < TOTAL_COLUMNS; x++) {
 			for (int y = 0; y < TOTAL_ROWS; y++) {
 				if ((x == 0) || (y != TOTAL_ROWS - 1)) {
 					Color c = colorArray[x][y];
-					g.setColor(c);
-					
+					g.setColor(c);					
 					g.fillRect(x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)) + 1, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)) + 1, INNER_CELL_SIZE, INNER_CELL_SIZE);
 					
 				
@@ -151,4 +147,5 @@ public class MyPanel extends JPanel {
 	public boolean checkForBombs ( int x, int y){
 		return bombArray[x][y]==1;
 	}
+	
 }
