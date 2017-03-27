@@ -10,8 +10,8 @@ public class MyPanel extends JPanel {
 	private static final int GRID_X = 25;
 	private static final int GRID_Y = 25;
 	private static final int INNER_CELL_SIZE = 29;
-	private static final int TOTAL_COLUMNS = 9;
-	private static final int TOTAL_ROWS = 9; 
+	private static final int TOTAL_COLUMNS = 10;
+	private static final int TOTAL_ROWS = 10; 
 	
 	private final int TOTAL_BOMBS = 20;
 	
@@ -53,7 +53,7 @@ public class MyPanel extends JPanel {
 		for (int x = 1; x < TOTAL_COLUMNS-1; x++) {   
 			for (int y = 1; y < TOTAL_ROWS-1; y++) {
 				int numCount = 0;
-
+				
 				if(bombArray[x-1][y-1]==1){
 					numCount++;
 				}
@@ -77,7 +77,7 @@ public class MyPanel extends JPanel {
 				}
 				if(bombArray[x-1][y+1]==1){
 					numCount++;
-				}
+				} 
 				adjacentBombs[x][y] = numCount;
 			}
 		}
@@ -115,9 +115,10 @@ public class MyPanel extends JPanel {
 					Color c = colorArray[x][y];
 					g.setColor(c);					
 					g.fillRect(x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)) + 1, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)) + 1, INNER_CELL_SIZE, INNER_CELL_SIZE);
+					if(bombArray[x][y]!=1){
 					g.setColor(Color.BLUE);
-					g.drawString(adjadcentBombs(x,y) + "",x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)) + 12, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)) + 20);
-				
+					g.drawString(adjacentBombs(x,y) + "",x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)) + 12, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)) + 20);
+					}
 				
 			}
 		}
@@ -175,8 +176,9 @@ public class MyPanel extends JPanel {
 	public boolean checkForBombs ( int x, int y){
 		return bombArray[x][y]==1;
 	}
-	public int adjadcentBombs(int x, int y){
+	public int adjacentBombs(int x, int y){
 		return adjacentBombs[x][y];
 	}
+	
 	
 }

@@ -100,6 +100,9 @@ public class MyMouseAdapter extends MouseAdapter {
 							if ( !myPanel.checkForBombs(myPanel.mouseDownGridX , myPanel.mouseDownGridY)){
 								myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.GRAY;
 								myPanel.repaint();
+								if(myPanel.adjacentBombs(myPanel.mouseDownGridX,myPanel.mouseDownGridY)==myPanel.adjacentBombs[myPanel.mouseDownGridX][myPanel.mouseDownGridY]){
+									
+								}
 							}else{
 								myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.BLACK;
 								myPanel.repaint();
@@ -111,38 +114,8 @@ public class MyMouseAdapter extends MouseAdapter {
 			myPanel.repaint();
 			break;
 		case 3:
-			c = e.getComponent();
-            while (!(c instanceof JFrame)) {
-                c = c.getParent();
-                if (c == null) {
-                    return;
-                }
-            }
-       	myFrame = (JFrame) c;
-       	myPanel = (MyPanel) myFrame.getContentPane().getComponent(0);
-       	 myInsets = myFrame.getInsets();
-             x1 = myInsets.left;
-             y1 = myInsets.top;
-            e.translatePoint(-x1, -y1);
-         	 x = e.getX();
-             y = e.getY();
-            myPanel.x = x;
-            myPanel.y = y;
-             gridX = myPanel.getGridX(x, y);
-             gridY = myPanel.getGridY(x, y);
-             if ((myPanel.mouseDownGridX == -1) || (myPanel.mouseDownGridY == -1)) {
- 				//Had pressed outside
- 				//Do nothing
- 			} else {
- 				if ((gridX == -1) || (gridY == -1)) {
- 					//Is releasing outside
- 					//Do nothing
- 				} else {
- 					myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.RED;
-					myPanel.repaint();
- 					//Right mouse button
- 				}
- 			}
+		
+ 			
 			//Do nothing
 			break;
 		default:    //Some other button (2 = Middle mouse button, etc.)
