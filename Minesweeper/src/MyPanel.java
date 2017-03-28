@@ -3,6 +3,7 @@ import java.awt.Graphics;
 import java.awt.Insets;
 import java.util.Random;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class MyPanel extends JPanel {
@@ -10,8 +11,8 @@ public class MyPanel extends JPanel {
 	private static final int GRID_X = 25;
 	private static final int GRID_Y = 25;
 	private static final int INNER_CELL_SIZE = 29;
-	private static final int TOTAL_COLUMNS = 10;
-	private static final int TOTAL_ROWS = 10; 
+	private static final int TOTAL_COLUMNS = 9;
+	private static final int TOTAL_ROWS = 9; 
 	
 	private final int TOTAL_BOMBS = 20;
 	
@@ -22,7 +23,7 @@ public class MyPanel extends JPanel {
 	public int mouseDownGridY = 0;
 	public int numBombs = 0;
 	public int [][] adjacentBombs = new int [TOTAL_COLUMNS][TOTAL_ROWS];
-	public  int [][] bombArray = new int [TOTAL_COLUMNS][TOTAL_ROWS];
+	public  int [][] bombArray = new int [TOTAL_COLUMNS+1][TOTAL_ROWS+1];
 	public Color[][] colorArray = new Color[TOTAL_COLUMNS][TOTAL_ROWS];
 	public MyPanel() {   //This is the constructor... this code runs first to initialize
 		if (INNER_CELL_SIZE + (new Random()).nextInt(1) < 1) {	//Use of "random" to prevent unwanted Eclipse warning
@@ -50,10 +51,36 @@ public class MyPanel extends JPanel {
 				bombArray [c][r]=Bomb;
 			}
 		}
-		for (int x = 1; x < TOTAL_COLUMNS-1; x++) {   
-			for (int y = 1; y < TOTAL_ROWS-1; y++) {
+//		for (int x1 = 0; x1 < TOTAL_COLUMNS; x1++) {   
+//			for (int y1 = 0; y1 < TOTAL_ROWS; y1++) {
+//				 if(((y>=0 && y<bombArray[0].length) ||( x>=0 && x<bombArray.length))&&bombArray[x][y]==1){
+//						
+//							numCount++;
+//						
+//				 }
+//			}
+//		}
+		for (int x = 0; x < TOTAL_COLUMNS; x++) {   
+			for (int y = 0; y < TOTAL_ROWS; y++) {
 				int numCount = 0;
-				
+				if((y==0 || x==0 )){
+					if(bombArray[x][y+1]==1){
+						numCount++;
+					}
+					if(bombArray[x+1][y]==1){
+						numCount++;
+					}
+					if(bombArray[x+1][y+1]==1){
+						numCount++;
+					}
+					
+			 }else{
+				if(bombArray[x+1][y-1]==1){
+					numCount++;
+				}
+				if(bombArray[x-1][y+1]==1){
+					numCount++;
+				} 
 				if(bombArray[x-1][y-1]==1){
 					numCount++;
 				}
@@ -72,15 +99,11 @@ public class MyPanel extends JPanel {
 				if(bombArray[x+1][y+1]==1){
 					numCount++;
 				}
-				if(bombArray[x+1][y-1]==1){
-					numCount++;
-				}
-				if(bombArray[x-1][y+1]==1){
-					numCount++;
-				} 
+			 }
 				adjacentBombs[x][y] = numCount;
 			}
 		}
+		
 	}
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -115,14 +138,27 @@ public class MyPanel extends JPanel {
 					Color c = colorArray[x][y];
 					g.setColor(c);					
 					g.fillRect(x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)) + 1, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)) + 1, INNER_CELL_SIZE, INNER_CELL_SIZE);
-					if(bombArray[x][y]!=1 && adjacentBombs(x,  y)>0 ){
+					if(bombArray[x][y]!=1 && adjacentBombs(x,  y)>0){
 					g.setColor(Color.BLUE);
 					g.drawString(adjacentBombs(x,y) + "",x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)) + 12, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)) + 20);
-					
+//					if(bombArray[x][y]!=1 && adjacentBombs(x,  y)>0 && colorArray[x][y]==Color.GRAY){
 					}
 				
 			}
 		}
+	}
+	public void triggeredbomb(){
+		for (int x = 0; x < TOTAL_COLUMNS; x++) {
+			for (int y = 0; y < TOTAL_ROWS; y++) {
+				if(bombArray[x][y]==1){
+					colorArray[x][y]=Color.BLACK;
+				}
+			}
+		}
+		this.repaint();
+		JOptionPane.showMessageDialog(null, "GAME OVER!");
+		System.exit(0);
+		return;
 	}
 	public int getGridX(int x, int y) {
 		Insets myInsets = getInsets();
@@ -141,10 +177,8 @@ public class MyPanel extends JPanel {
 		}
 		x = x / (INNER_CELL_SIZE + 1);
 		y = y / (INNER_CELL_SIZE + 1);
-		if (x == 0 && y == TOTAL_ROWS - 1) {    //The lower left extra cell
-			return x;
-		}
-		if (x < 0 || x > TOTAL_COLUMNS - 1 || y < 0 || y > TOTAL_ROWS - 2) {   //Outside the rest of the grid
+		
+		if (x < 0 || x > TOTAL_COLUMNS - 1 || y < 0 || y > TOTAL_ROWS - 1) {   //Outside the rest of the grid
 			return -1;
 		}
 		return x;
@@ -169,9 +203,7 @@ public class MyPanel extends JPanel {
 		if (x == 0 && y == TOTAL_ROWS - 1) {    //The lower left extra cell
 			return y;
 		}
-		if (x < 0 || x > TOTAL_COLUMNS - 1 || y < 0 || y > TOTAL_ROWS - 2) {   //Outside the rest of the grid
-			return -1;
-		}
+		
 		return y;
 	}
 	public boolean checkForBombs ( int x, int y){
