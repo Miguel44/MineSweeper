@@ -73,7 +73,6 @@ public class MyPanel extends JPanel {
 					if(bombArray[x+1][y+1]==1){
 						numCount++;
 					}
-					
 			 }else{
 				if(bombArray[x+1][y-1]==1){
 					numCount++;
