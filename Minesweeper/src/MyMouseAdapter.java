@@ -99,19 +99,17 @@ public class MyMouseAdapter extends MouseAdapter {
 						//Released the mouse button on the same cell where it was pressed
 							if ( !myPanel.checkForBombs(myPanel.mouseDownGridX , myPanel.mouseDownGridY)){
 								myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.GRAY;
-							
 								myPanel.repaint();
+								// Checks if the player has won
+								if(myPanel.playerWon()){
+									System.exit(0);
+								}
 		
-							}
+							}// If player clicked a bomb the game is over
 							else{
-								myPanel.triggeredbomb();
-								myPanel.repaint();
-								
-							
-							
-								
+								myPanel.clickedBomb();
+								myPanel.repaint();							
 							}
-							
 					}
 				
 				}	}
@@ -151,9 +149,15 @@ public class MyMouseAdapter extends MouseAdapter {
 					if ((myPanel.mouseDownGridX != gridX) || (myPanel.mouseDownGridY != gridY)) {
 						//Released the mouse button on a different cell where it was pressed
 						//Do nothing
-					} else {
+					} else {//Changes white cells to red cells simulating flag
+						if(myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == Color.WHITE){
 						myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.RED;
-						
+						myPanel.repaint();
+						}
+						else if(myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == Color.RED){
+							myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.WHITE;
+							myPanel.repaint();
+						}
 					}
 				}
 			}	

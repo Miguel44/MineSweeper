@@ -14,9 +14,9 @@ public class MyPanel extends JPanel {
 	private static final int TOTAL_COLUMNS = 9;
 	private static final int TOTAL_ROWS = 9; 
 	
-	private final int TOTAL_BOMBS = 20;
 	
-	Random randomBomb = new Random ();//Last row has only one cell
+	Random randomBomb = new Random ();
+	private final int TOTAL_BOMBS = 15;
 	public int x = -1;
 	public int y = -1;
 	public int mouseDownGridX = 0;
@@ -41,7 +41,8 @@ public class MyPanel extends JPanel {
 				colorArray[x][y] = Color.WHITE;	
 			}
 		}
-		while(numBombs<TOTAL_BOMBS){
+		
+		while(numBombs<TOTAL_BOMBS){// Populates cells with bombs
 			
 			int c = randomBomb.nextInt(TOTAL_COLUMNS);
 			int r = randomBomb.nextInt(TOTAL_ROWS);
@@ -51,15 +52,8 @@ public class MyPanel extends JPanel {
 				bombArray [c][r]=Bomb;
 			}
 		}
-//		for (int x1 = 0; x1 < TOTAL_COLUMNS; x1++) {   
-//			for (int y1 = 0; y1 < TOTAL_ROWS; y1++) {
-//				 if(((y>=0 && y<bombArray[0].length) ||( x>=0 && x<bombArray.length))&&bombArray[x][y]==1){
-//						
-//							numCount++;
-//						
-//				 }
-//			}
-//		}
+
+		// Counts the bomb adjacent to a cell
 		for (int x = 0; x < TOTAL_COLUMNS; x++) {   
 			for (int y = 0; y < TOTAL_ROWS; y++) {
 				int numCount = 0;
@@ -104,6 +98,7 @@ public class MyPanel extends JPanel {
 		}
 		
 	}
+	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
@@ -137,28 +132,16 @@ public class MyPanel extends JPanel {
 					Color c = colorArray[x][y];
 					g.setColor(c);					
 					g.fillRect(x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)) + 1, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)) + 1, INNER_CELL_SIZE, INNER_CELL_SIZE);
-					if(bombArray[x][y]!=1 && adjacentBombs(x,  y)>0){
-					g.setColor(Color.BLUE);
-					g.drawString(adjacentBombs(x,y) + "",x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)) + 12, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)) + 20);
-//					if(bombArray[x][y]!=1 && adjacentBombs(x,  y)>0 && colorArray[x][y]==Color.GRAY){
+						if(bombArray[x][y]!=1 && adjacentBombs(x,  y)>0 && colorArray[x][y]==Color.GRAY){
+									g.setColor(Color.BLUE);
+									g.drawString(adjacentBombs(x,y) + "",x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)) + 12, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)) + 20);
+									
 					}
 				
 			}
 		}
 	}
-	public void triggeredbomb(){
-		for (int x = 0; x < TOTAL_COLUMNS; x++) {
-			for (int y = 0; y < TOTAL_ROWS; y++) {
-				if(bombArray[x][y]==1){
-					colorArray[x][y]=Color.BLACK;
-				}
-			}
-		}
-		this.repaint();
-		JOptionPane.showMessageDialog(null, "GAME OVER!");
-		System.exit(0);
-		return;
-	}
+	
 	public int getGridX(int x, int y) {
 		Insets myInsets = getInsets();
 		int x1 = myInsets.left;
@@ -205,12 +188,45 @@ public class MyPanel extends JPanel {
 		
 		return y;
 	}
-	public boolean checkForBombs ( int x, int y){
+	
+	public boolean checkForBombs ( int x, int y){// Returns true if a bomb is present
 		return bombArray[x][y]==1;
 	}
-	public int adjacentBombs(int x, int y){
+	
+	public int adjacentBombs(int x, int y){// Checks adjacent cells for bombs
 		return adjacentBombs[x][y];
 	}
 	
+	public void clickedBomb(){// Checks if player touches bomb
+		for (int x = 0; x < TOTAL_COLUMNS; x++) {
+			for (int y = 0; y < TOTAL_ROWS; y++) {
+				if(bombArray[x][y]==1){
+					colorArray[x][y]=Color.BLACK;
+				}
+			}
+		}
+		this.repaint();
+		JOptionPane.showMessageDialog(null, "GAME OVER!");
+		System.exit(0);
+		return;
+	}
+	
+	public boolean playerWon(){ // Check if player has clicked on every white cell that does not include bomb
+		int cellsClicked = 0;
+		for (int i = 0; i < TOTAL_ROWS; i++){
+			for (int j = 0; j < TOTAL_COLUMNS; j++){
+				if (colorArray[i][j] == Color.GRAY){
+					cellsClicked++;
+				}
+			}
+		}
+		if (cellsClicked >= TOTAL_ROWS * TOTAL_COLUMNS - TOTAL_BOMBS){
+			this.repaint();
+			JOptionPane.showMessageDialog(null, "YOU WON!");
+			return true;
+		}
+		return false;
+	}
+
 	
 }
